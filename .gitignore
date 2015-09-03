@@ -1,0 +1,3 @@
+#Exclude built files
+obj/
+bin/
