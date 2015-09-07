@@ -53,6 +53,7 @@ namespace Project1
             Content.RootDirectory = "Content";
 
             keyboardManager = new KeyboardManager(this);
+            mouseManager = new MouseManager(this);
         }
 
         protected override void LoadContent()
@@ -75,6 +76,7 @@ namespace Project1
         protected override void Update(GameTime gameTime)
         {
             keyboardState = keyboardManager.GetState();
+            mouseState = mouseManager.GetState();
             model.Update(gameTime);
 
             // Handle base.Update

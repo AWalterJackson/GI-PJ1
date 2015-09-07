@@ -28,13 +28,15 @@ namespace Project1
         public void Update(GameTime gameTime)
         {
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
-            Console.WriteLine(View.ToString());
+            //Console.WriteLine(View.ToString());
+            //Console.WriteLine(game.mouseState.Y.ToString());
             int rotation = 0;
             if (game.keyboardState.IsKeyDown(Keys.E)) { rotation += 1; }
             if (game.keyboardState.IsKeyDown(Keys.Q)) { rotation -= 1; }
+            float x_pos = game.mouseState.X - 0.5f;
+            float y_pos = game.mouseState.Y - 0.5f;
             int time = gameTime.ElapsedGameTime.Milliseconds;
-            View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * 0, rotation_speed * time * 0, rotation * rotation_speed * time));
-            Console.WriteLine(View.ToString());
+            View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * y_pos, rotation_speed * time * x_pos, rotation * rotation_speed * time));
         }
     }
 }
