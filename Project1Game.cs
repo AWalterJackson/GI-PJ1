@@ -35,8 +35,10 @@ namespace Project1
         private GraphicsDeviceManager graphicsDeviceManager;
         private GameObject model;
         private Camera camera;
-        public KeyboardState keyboardState;
         private KeyboardManager keyboardManager;
+        public KeyboardState keyboardState;
+        private MouseManager mouseManager;
+        public MouseState mouseState;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Project1Game" /> class.
@@ -77,7 +79,7 @@ namespace Project1
 
             // Handle base.Update
             base.Update(gameTime);
-            camera.Update();
+            camera.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)

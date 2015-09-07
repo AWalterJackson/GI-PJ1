@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SharpDX;
 using SharpDX.Toolkit;
+using SharpDX.Toolkit.Input;
 
 namespace Project1
 {
@@ -11,11 +12,12 @@ namespace Project1
     {
         public Matrix View;
         public Matrix Projection;
-        public Game game;
+        public Project1Game game;
         private float speed = 0.005f;
+        private float rotation_speed = 0.005f;
 
         // Ensures that all objects are being rendered from a consistent viewpoint
-        public Camera(Game game)
+        public Camera(Project1Game game)
         {
             View = Matrix.LookAtLH(new Vector3(0, 0, -10), new Vector3(0, 0, 0), Vector3.UnitY);
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
@@ -23,10 +25,16 @@ namespace Project1
         }
 
         // If the screen is resized, the projection matrix will change
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
-            View = Matrix.LookAtLH(new Vector3(0, 0, -10), new Vector3(0, 0, 0), Vector3.UnitY);
+            Console.WriteLine(View.ToString());
+            int rotation = 0;
+            if (game.keyboardState.IsKeyDown(Keys.E)) { rotation += 1; }
+            if (game.keyboardState.IsKeyDown(Keys.Q)) { rotation -= 1; }
+            int time = gameTime.ElapsedGameTime.Milliseconds;
+            View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * 0, rotation_speed * time * 0, rotation * rotation_speed * time));
+            Console.WriteLine(View.ToString());
         }
     }
 }
