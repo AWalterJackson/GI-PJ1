@@ -88,7 +88,8 @@ namespace Project1
         {
             // Clears the screen with the Color.CornflowerBlue
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            model.basicEffect.Projection = camera.Projection;
+            model.basicEffect.View = camera.View;
             model.Draw(gameTime);
 
             // Handle base.Draw

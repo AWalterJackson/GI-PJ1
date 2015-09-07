@@ -14,7 +14,7 @@ namespace Project1
         public Matrix Projection;
         public Project1Game game;
         private float speed = 0.005f;
-        private float rotation_speed = 0.005f;
+        private float rotation_speed = 0.0005f;
 
         // Ensures that all objects are being rendered from a consistent viewpoint
         public Camera(Project1Game game)
@@ -28,15 +28,28 @@ namespace Project1
         public void Update(GameTime gameTime)
         {
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
-            //Console.WriteLine(View.ToString());
+            Console.WriteLine(View.ToString());
             //Console.WriteLine(game.mouseState.Y.ToString());
-            int rotation = 0;
-            if (game.keyboardState.IsKeyDown(Keys.E)) { rotation += 1; }
-            if (game.keyboardState.IsKeyDown(Keys.Q)) { rotation -= 1; }
+            int rotation = direction(Keys.E, Keys.Q);
             float x_pos = game.mouseState.X - 0.5f;
             float y_pos = game.mouseState.Y - 0.5f;
             int time = gameTime.ElapsedGameTime.Milliseconds;
-            View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * y_pos, rotation_speed * time * x_pos, rotation * rotation_speed * time));
+            View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * -x_pos *0, rotation_speed * time * -y_pos*0, rotation * rotation_speed * time));
+            int forward = direction(Keys.W, Keys.S);
+            int sideways = direction(Keys.A, Keys.D);
+            Vector3 movement = speed * time * new Vector3(forward * View.Forward.X + sideways * View.Right.X, forward * View.Forward.Y + sideways * View.Right.Y, forward * View.Forward.Z + sideways * View.Right.Z);
+            //Console.WriteLine(Matrix.Translation(movement).ToString());
+            View = Matrix.Add(View, Matrix.Translation(movement));
         }
+
+        //Chooses what direction to go or rotate etc, based one keyboard input
+        private int direction(Keys key1, Keys key2)
+        {
+            int dir = 0;
+            if (game.keyboardState.IsKeyDown(key1)) { dir += 1; }
+            if (game.keyboardState.IsKeyDown(key2)) { dir -= 1; }
+            return dir;
+        }
+
     }
 }
