@@ -33,12 +33,15 @@ namespace Project1
     public class Project1Game : Game
     {
         private GraphicsDeviceManager graphicsDeviceManager;
-        private GameObject model;
+        private Landscape model;
+        private Water water;
         private Camera camera;
         private KeyboardManager keyboardManager;
         public KeyboardState keyboardState;
         private MouseManager mouseManager;
         public MouseState mouseState;
+        private Sun lightsource;
+        public int scale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Project1Game" /> class.
@@ -52,13 +55,16 @@ namespace Project1
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
+            scale = 7;
             keyboardManager = new KeyboardManager(this);
             mouseManager = new MouseManager(this);
         }
 
         protected override void LoadContent()
         {
-            model = new Landscape(this, 6);
+            model = new Landscape(this, this.scale);
+            water = new Water(this);
+            lightsource = new Sun(this);
 
             // Create an input layout from the vertices
 
@@ -69,7 +75,6 @@ namespace Project1
         {
             Window.Title = "Project 1";
             this.camera = new Camera(this);
-
             base.Initialize();
         }
 
@@ -80,6 +85,9 @@ namespace Project1
 
             // Handle base.Update
             base.Update(gameTime);
+            lightsource.Update(gameTime);
+            model.Update(gameTime, lightsource.getLightDirection());
+            water.Update(gameTime, lightsource.getLightDirection());
             camera.Update(gameTime);
         }
 
@@ -88,8 +96,14 @@ namespace Project1
             // Clears the screen with the Color.CornflowerBlue
             GraphicsDevice.Clear(Color.CornflowerBlue);
             model.basicEffect.Projection = camera.Projection;
+            lightsource.basicEffect.Projection = camera.Projection;
+            water.basicEffect.Projection = camera.Projection;
             model.basicEffect.View = camera.View;
+            lightsource.basicEffect.View = camera.View;
+            water.basicEffect.View = camera.View;
             model.Draw(gameTime);
+            //lightsource.Draw(gameTime);
+            //water.Draw(gameTime);
 
             // Handle base.Draw
             base.Draw(gameTime);

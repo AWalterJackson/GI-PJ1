@@ -9,11 +9,11 @@ namespace Project1{
     using SharpDX.Toolkit.Graphics;
     class Landscape : ColoredGameObject{
 
-        int size;
-        int polycount;
-        int degree;
-        float[,] coords;
-        Random rngesus;
+        public int size;
+        private int polycount;
+        private int degree;
+        private float[,] coords;
+        private Random rngesus;
         public Landscape(Game game, int degree){
             this.degree = degree;
             this.size = (int)Math.Pow(2,this.degree)+1;
@@ -32,13 +32,6 @@ namespace Project1{
                 Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f),
                 World = Matrix.Identity
             };
-
-            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
-
-            basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
-            basicEffect.DirectionalLight0.Direction = new Vector3(0, -1, 0);
-            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
             this.game = game;
@@ -114,12 +107,22 @@ namespace Project1{
             VertexPositionNormalColor[] VList = new VertexPositionNormalColor[this.polycount*3];
             int index=0;
             
+            Vector3 p1,p2,p3;
+            Vector3 normal;
+
             //Upper Triangles in Mesh
             for (int i = 0; i < this.size-1; i++){
                 for (int j = 0; j < this.size - 1;j++ ){
-                    VList[index] = new VertexPositionNormalColor(new Vector3(i,map[i,j],j),new Vector3(0,1,0),getColor(map[i,j]));
-                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j + 1], j + 1), new Vector3(0, 1, 0), getColor(map[i,j+1]));
-                    VList[index + 2] = new VertexPositionNormalColor(new Vector3(i + 1, map[i + 1, j + 1], j + 1), new Vector3(0, 1, 0), getColor(map[i+1,j+1]));
+
+                    p1 = new Vector3(i, map[i, j], j);
+                    p2 = new Vector3(i, map[i, j + 1], j + 1);
+                    p3 = new Vector3(i + 1, map[i + 1, j + 1], j + 1);
+
+                    normal = genNormal(p1,p2,p3);
+
+                    VList[index] = new VertexPositionNormalColor(p1,normal,getColor(map[i,j]));
+                    VList[index + 1] = new VertexPositionNormalColor(p2, normal, getColor(map[i,j+1]));
+                    VList[index + 2] = new VertexPositionNormalColor(p3, normal, getColor(map[i+1,j+1]));
                     index += 3;
                 }
             }
@@ -127,9 +130,16 @@ namespace Project1{
             //Lower Triangles in Mesh
             for (int i = 1; i < this.size; i++){
                 for (int j = 1; j < this.size; j++){
-                    VList[index] = new VertexPositionNormalColor(new Vector3(i, map[i, j], j), new Vector3(0, 1, 0), getColor(map[i,j]));
-                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j - 1], j - 1), new Vector3(0, 1, 0), getColor(map[i,j-1]));
-                    VList[index+2] = new VertexPositionNormalColor(new Vector3(i-1, map[i-1, j-1], j-1), new Vector3(0, 1, 0), getColor(map[i-1,j-1]));
+
+                    p1 = new Vector3(i, map[i, j], j);
+                    p2 = new Vector3(i, map[i, j - 1], j - 1);
+                    p3 = new Vector3(i - 1, map[i - 1, j - 1], j - 1);
+
+                    normal = genNormal(p1, p2, p3);
+
+                    VList[index] = new VertexPositionNormalColor(p1, normal, getColor(map[i,j]));
+                    VList[index + 1] = new VertexPositionNormalColor(p2, normal, getColor(map[i,j-1]));
+                    VList[index+2] = new VertexPositionNormalColor(p3, normal, getColor(map[i-1,j-1]));
                     index += 3;
                 }
             }
@@ -148,10 +158,29 @@ namespace Project1{
             }
         }
 
-        public override void Update(GameTime gameTime)
+        private Vector3 genNormal(Vector3 a, Vector3 b, Vector3 c)
+        {
+            Vector3 normal = Vector3.Cross(b - a, c - a);
+            normal = Vector3.Normalize(normal);
+            return normal;
+        }
+
+        public void Update(GameTime gameTime, Vector3 light)
         {
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
+
+            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
+            basicEffect.DirectionalLight0.Direction = light;
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
+        }
+
+        public override void Update(GameTime gametime)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Draw(GameTime gameTime)
