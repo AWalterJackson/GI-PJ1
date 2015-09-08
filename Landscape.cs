@@ -114,12 +114,22 @@ namespace Project1{
             VertexPositionNormalColor[] VList = new VertexPositionNormalColor[this.polycount*3];
             int index=0;
             
+            Vector3 p1,p2,p3;
+            Vector3 normal;
+
             //Upper Triangles in Mesh
             for (int i = 0; i < this.size-1; i++){
                 for (int j = 0; j < this.size - 1;j++ ){
-                    VList[index] = new VertexPositionNormalColor(new Vector3(i,map[i,j],j),new Vector3(0,1,0),getColor(map[i,j]));
-                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j + 1], j + 1), new Vector3(0, 1, 0), getColor(map[i,j+1]));
-                    VList[index + 2] = new VertexPositionNormalColor(new Vector3(i + 1, map[i + 1, j + 1], j + 1), new Vector3(0, 1, 0), getColor(map[i+1,j+1]));
+
+                    p1 = new Vector3(i, map[i, j], j);
+                    p2 = new Vector3(i, map[i, j + 1], j + 1);
+                    p3 = new Vector3(i + 1, map[i + 1, j + 1], j + 1);
+
+                    normal = genNormal(p1,p2,p3);
+
+                    VList[index] = new VertexPositionNormalColor(p1,normal,getColor(map[i,j]));
+                    VList[index + 1] = new VertexPositionNormalColor(p2, normal, getColor(map[i,j+1]));
+                    VList[index + 2] = new VertexPositionNormalColor(p3, normal, getColor(map[i+1,j+1]));
                     index += 3;
                 }
             }
@@ -127,9 +137,16 @@ namespace Project1{
             //Lower Triangles in Mesh
             for (int i = 1; i < this.size; i++){
                 for (int j = 1; j < this.size; j++){
-                    VList[index] = new VertexPositionNormalColor(new Vector3(i, map[i, j], j), new Vector3(0, 1, 0), getColor(map[i,j]));
-                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j - 1], j - 1), new Vector3(0, 1, 0), getColor(map[i,j-1]));
-                    VList[index+2] = new VertexPositionNormalColor(new Vector3(i-1, map[i-1, j-1], j-1), new Vector3(0, 1, 0), getColor(map[i-1,j-1]));
+
+                    p1 = new Vector3(i, map[i, j], j);
+                    p2 = new Vector3(i, map[i, j - 1], j - 1);
+                    p3 = new Vector3(i - 1, map[i - 1, j - 1], j - 1);
+
+                    normal = genNormal(p1, p2, p3);
+
+                    VList[index] = new VertexPositionNormalColor(p1, normal, getColor(map[i,j]));
+                    VList[index + 1] = new VertexPositionNormalColor(p2, normal, getColor(map[i,j-1]));
+                    VList[index+2] = new VertexPositionNormalColor(p3, normal, getColor(map[i-1,j-1]));
                     index += 3;
                 }
             }
@@ -146,6 +163,13 @@ namespace Project1{
             else{
                 return Color.SandyBrown;
             }
+        }
+
+        private Vector3 genNormal(Vector3 a, Vector3 b, Vector3 c)
+        {
+            Vector3 normal = Vector3.Cross(b - a, c - a);
+            normal = Vector3.Normalize(normal);
+            return normal;
         }
 
         public override void Update(GameTime gameTime)
