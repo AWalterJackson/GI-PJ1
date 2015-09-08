@@ -27,10 +27,18 @@ namespace Project1{
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
                 VertexColorEnabled = true,
+                LightingEnabled = true,
                 View = Matrix.LookAtLH(new Vector3(0, 0, -5), new Vector3(0, 0, 0), Vector3.UnitY),
                 Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f),
                 World = Matrix.Identity
             };
+
+            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
+
+            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
+            basicEffect.DirectionalLight0.Direction = new Vector3(0, -1, 0);
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
             this.game = game;
@@ -109,9 +117,9 @@ namespace Project1{
             //Upper Triangles in Mesh
             for (int i = 0; i < this.size-1; i++){
                 for (int j = 0; j < this.size - 1;j++ ){
-                    VList[index] = new VertexPositionNormalColor(new Vector3(i,map[i,j],j),new Vector3(0,0,1),getColor(map[i,j]));
-                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j + 1], j + 1), new Vector3(0, 0, 1), getColor(map[i,j+1]));
-                    VList[index + 2] = new VertexPositionNormalColor(new Vector3(i + 1, map[i + 1, j + 1], j + 1), new Vector3(0, 0, 1), getColor(map[i+1,j+1]));
+                    VList[index] = new VertexPositionNormalColor(new Vector3(i,map[i,j],j),new Vector3(0,1,0),getColor(map[i,j]));
+                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j + 1], j + 1), new Vector3(0, 1, 0), getColor(map[i,j+1]));
+                    VList[index + 2] = new VertexPositionNormalColor(new Vector3(i + 1, map[i + 1, j + 1], j + 1), new Vector3(0, 1, 0), getColor(map[i+1,j+1]));
                     index += 3;
                 }
             }
@@ -119,9 +127,9 @@ namespace Project1{
             //Lower Triangles in Mesh
             for (int i = 1; i < this.size; i++){
                 for (int j = 1; j < this.size; j++){
-                    VList[index] = new VertexPositionNormalColor(new Vector3(i, map[i, j], j), new Vector3(0, 0, 1), getColor(map[i,j]));
-                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j - 1], j - 1), new Vector3(0, 0, 1), getColor(map[i,j-1]));
-                    VList[index+2] = new VertexPositionNormalColor(new Vector3(i-1, map[i-1, j-1], j-1), new Vector3(0, 0, 1), getColor(map[i-1,j-1]));
+                    VList[index] = new VertexPositionNormalColor(new Vector3(i, map[i, j], j), new Vector3(0, 1, 0), getColor(map[i,j]));
+                    VList[index + 1] = new VertexPositionNormalColor(new Vector3(i, map[i, j - 1], j - 1), new Vector3(0, 1, 0), getColor(map[i,j-1]));
+                    VList[index+2] = new VertexPositionNormalColor(new Vector3(i-1, map[i-1, j-1], j-1), new Vector3(0, 1, 0), getColor(map[i-1,j-1]));
                     index += 3;
                 }
             }
@@ -135,9 +143,6 @@ namespace Project1{
             if (vert >= 10){
                 return Color.Gray;
             }
-            if (vert < -5){
-                return Color.Blue;
-            }
             else{
                 return Color.SandyBrown;
             }
@@ -147,8 +152,6 @@ namespace Project1{
         {
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
-            //basicEffect.World = Matrix.Translation(-10, -5, 8);// *Matrix.RotationX(1.57f);
-            //basicEffect.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
         }
 
         public override void Draw(GameTime gameTime)
