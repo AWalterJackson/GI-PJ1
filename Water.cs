@@ -27,6 +27,15 @@ namespace Project1
                     new VertexPositionNormalColor(new Vector3(max, 0f, 0f), surfacenormal, Color.LightBlue), //FTRN
                     new VertexPositionNormalColor(new Vector3(0f, 0f, 0f), surfacenormal, Color.LightBlue), //FBRN)
                 });
+
+            basicEffect = new BasicEffect(game.GraphicsDevice)
+            {
+                VertexColorEnabled = true,
+                LightingEnabled = true,
+                View = Matrix.LookAtLH(new Vector3(0, 0, -5), new Vector3(0, 0, 0), Vector3.UnitY),
+                Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f),
+                World = Matrix.Identity
+            };
         }
 
         public override void Update(GameTime gametime)
@@ -34,9 +43,27 @@ namespace Project1
             throw new NotImplementedException();
         }
 
+        public void Update(GameTime gameTime, Vector3 light)
+        {
+            var time = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
+
+            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
+            basicEffect.DirectionalLight0.Direction = light;
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
+        }
+
         public override void Draw(GameTime gametime)
         {
-            throw new NotImplementedException();
+            // Setup the vertices
+            game.GraphicsDevice.SetVertexBuffer(vertices);
+            game.GraphicsDevice.SetVertexInputLayout(inputLayout);
+
+            // Apply the basic effect technique and draw the sun
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Project1
     {
         private GraphicsDeviceManager graphicsDeviceManager;
         private Landscape model;
-        //private Water water;
+        private Water water;
         private Camera camera;
         private KeyboardManager keyboardManager;
         public KeyboardState keyboardState;
@@ -63,8 +63,8 @@ namespace Project1
         protected override void LoadContent()
         {
             model = new Landscape(this, this.scale);
-            //water = new Water(this);
-            this.lightsource = new Sun(this);
+            water = new Water(this);
+            lightsource = new Sun(this);
 
             // Create an input layout from the vertices
 
@@ -87,6 +87,7 @@ namespace Project1
             base.Update(gameTime);
             lightsource.Update(gameTime);
             model.Update(gameTime, lightsource.getLightDirection());
+            water.Update(gameTime, lightsource.getLightDirection());
             camera.Update(gameTime);
         }
 
@@ -96,10 +97,10 @@ namespace Project1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             model.basicEffect.Projection = camera.Projection;
             lightsource.basicEffect.Projection = camera.Projection;
-            //water.basicEffect.Projection = camera.Projection;
+            water.basicEffect.Projection = camera.Projection;
             model.basicEffect.View = camera.View;
             lightsource.basicEffect.View = camera.View;
-            //water.basicEffect.View = camera.View;
+            water.basicEffect.View = camera.View;
             model.Draw(gameTime);
             //lightsource.Draw(gameTime);
             //water.Draw(gameTime);

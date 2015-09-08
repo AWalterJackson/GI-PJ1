@@ -8,13 +8,14 @@ using SharpDX.Toolkit;
 namespace Project1
 {
     using SharpDX.Toolkit.Graphics;
-    public class Sun : ColoredGameObject
+    class Sun : ColoredGameObject
     {
         int worldsize;
         Vector3 ambientcolour;
         Vector3 directionalcolour;
         Vector3 specularcolour;
         Vector3 lightdirection;
+
         public Sun(Project1Game game)
         {
 
@@ -32,8 +33,10 @@ namespace Project1
             Vector3 leftNormal = new Vector3(-1.0f, 0.0f, 0.0f);
             Vector3 rightNormal = new Vector3(1.0f, 0.0f, 0.0f);
 
-            VertexPositionNormalColor[] points = new[]
-                    {
+            vertices = Buffer.Vertex.New(
+                game.GraphicsDevice,
+                new[]
+                {
                     new VertexPositionNormalColor(new Vector3(-1.0f, -1.0f, -1.0f), frontNormal, Color.Yellow), // Front FBLN
                     new VertexPositionNormalColor(new Vector3(-1.0f, 1.0f, -1.0f), frontNormal, Color.Yellow), //FTLN
                     new VertexPositionNormalColor(new Vector3(1.0f, 1.0f, -1.0f), frontNormal, Color.Yellow), //FTRN
@@ -70,9 +73,7 @@ namespace Project1
                     new VertexPositionNormalColor(new Vector3(1.0f, -1.0f, -1.0f), rightNormal, Color.Yellow), //FBRN
                     new VertexPositionNormalColor(new Vector3(1.0f, 1.0f, -1.0f), rightNormal, Color.Yellow), //FTRN
                     new VertexPositionNormalColor(new Vector3(1.0f, 1.0f, 1.0f), rightNormal, Color.Yellow), //BTRN
-                };
-
-            vertices = Buffer.Vertex.New(game.GraphicsDevice, points);
+                });
 
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
@@ -101,7 +102,7 @@ namespace Project1
         public override void Draw(GameTime gameTime)
         {
             // Setup the vertices
-            game.GraphicsDevice.SetVertexBuffer(this.vertices);
+            game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
 
             // Apply the basic effect technique and draw the sun
