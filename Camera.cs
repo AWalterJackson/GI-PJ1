@@ -13,7 +13,7 @@ namespace Project1
         public Matrix View;
         public Matrix Projection;
         public Project1Game game;
-        private float speed = 0.005f;
+        private float speed = 0.5f;
         private float rotation_speed = 0.0005f;
 
         // Ensures that all objects are being rendered from a consistent viewpoint
@@ -28,8 +28,6 @@ namespace Project1
         public void Update(GameTime gameTime)
         {
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
-            Console.WriteLine(View.ToString());
-            //Console.WriteLine(game.mouseState.Y.ToString());
             int rotation = direction(Keys.E, Keys.Q);
             float x_pos = game.mouseState.X - 0.5f;
             float y_pos = game.mouseState.Y - 0.5f;
@@ -37,8 +35,11 @@ namespace Project1
             View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * -x_pos *0, rotation_speed * time * -y_pos*0, rotation * rotation_speed * time));
             int forward = direction(Keys.W, Keys.S);
             int sideways = direction(Keys.A, Keys.D);
-            Vector3 movement = speed * time * new Vector3(forward * View.Forward.X + sideways * View.Right.X, forward * View.Forward.Y + sideways * View.Right.Y, forward * View.Forward.Z + sideways * View.Right.Z);
-            //Console.WriteLine(Matrix.Translation(movement).ToString());
+            if (rotation == 0 && forward == 0 && sideways == 0)
+            {
+                return;
+            }
+            Vector3 movement = speed * new Vector3(forward * View.Forward.X + sideways * View.Right.X, forward * View.Forward.Y + sideways * View.Right.Y, forward * View.Forward.Z + sideways * View.Right.Z);
             View = Matrix.Add(View, Matrix.Translation(movement));
         }
 

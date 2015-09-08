@@ -77,7 +77,6 @@ namespace Project1
         {
             keyboardState = keyboardManager.GetState();
             mouseState = mouseManager.GetState();
-            model.Update(gameTime);
 
             // Handle base.Update
             base.Update(gameTime);
