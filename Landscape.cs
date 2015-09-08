@@ -9,11 +9,11 @@ namespace Project1{
     using SharpDX.Toolkit.Graphics;
     class Landscape : ColoredGameObject{
 
-        int size;
-        int polycount;
-        int degree;
-        float[,] coords;
-        Random rngesus;
+        public int size;
+        private int polycount;
+        private int degree;
+        private float[,] coords;
+        private Random rngesus;
         public Landscape(Game game, int degree){
             this.degree = degree;
             this.size = (int)Math.Pow(2,this.degree)+1;
@@ -32,13 +32,6 @@ namespace Project1{
                 Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f),
                 World = Matrix.Identity
             };
-
-            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
-
-            basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
-            basicEffect.DirectionalLight0.Direction = new Vector3(0, -1, 0);
-            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
             this.game = game;
@@ -172,10 +165,22 @@ namespace Project1{
             return normal;
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector3 light)
         {
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
+
+            basicEffect.DirectionalLight0.Enabled = true;
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
+            basicEffect.DirectionalLight0.Direction = light;
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
+        }
+
+        public override void Update(GameTime gametime)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Draw(GameTime gameTime)
