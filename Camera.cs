@@ -24,7 +24,7 @@ namespace Project1
             target = new Vector3(0, 0, 0);
             up = Vector3.UnitY;
             View = Matrix.LookAtLH(position, target, up);
-            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
+            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, (float)Math.Pow(2, game.scale) + 1);
             this.game = game;
         }
 

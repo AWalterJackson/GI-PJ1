@@ -36,6 +36,8 @@ namespace Project1
                 Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f),
                 World = Matrix.Identity
             };
+
+            inputLayout = VertexInputLayout.FromBuffer(0, vertices);
             this.game = game;
         }
 
@@ -50,6 +52,8 @@ namespace Project1
 
             basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
 
+
+            basicEffect.Alpha = 0.5f;
             basicEffect.DirectionalLight0.Enabled = true;
             basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
             basicEffect.DirectionalLight0.Direction = light;

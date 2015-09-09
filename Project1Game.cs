@@ -108,5 +108,9 @@ namespace Project1
             // Handle base.Draw
             base.Draw(gameTime);
         }
+
+        public bool terraincollide(Vector3 pos){
+            return this.model.isColliding(pos);
+        }
     }
 }

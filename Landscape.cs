@@ -13,6 +13,7 @@ namespace Project1{
         private int polycount;
         private int degree;
         private float[,] coords;
+        private VertexPositionNormalColor[] terrain;
         private Random rngesus;
         public Landscape(Game game, int degree){
             this.degree = degree;
@@ -22,6 +23,7 @@ namespace Project1{
             this.coords = new float[size, size];
 
             Generate(0,this.size,0,this.size,100,65);
+            this.terrain = TerrainModel(this.coords);
             vertices = Buffer.Vertex.New(game.GraphicsDevice, TerrainModel(this.coords));
 
             basicEffect = new BasicEffect(game.GraphicsDevice)
@@ -192,6 +194,29 @@ namespace Project1{
             // Apply the basic effect technique and draw the terrain.
             basicEffect.CurrentTechnique.Passes[0].Apply();
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
+        }
+
+        public bool isColliding(Vector3 pos)
+        {
+            int i = 0;
+
+            int closestx = (int)Math.Round(pos.X, MidpointRounding.AwayFromZero);
+            int closestz = (int)Math.Round(pos.Z, MidpointRounding.AwayFromZero);
+
+            while (terrain[i].Position.X != closestx && terrain[i].Position.Z != closestz){
+                if (i > (polycount*3)/2 + 1){
+                    return false;
+                }
+                i++;
+            }
+
+            if (terrain[i].Position.Y >= pos.Y){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
