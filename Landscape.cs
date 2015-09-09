@@ -196,7 +196,7 @@ namespace Project1{
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
 
-        public bool isColliding(Vector3 pos)
+        /*public bool isColliding(Vector3 pos)
         {
             int i = 0;
 
@@ -217,6 +217,54 @@ namespace Project1{
             {
                 return false;
             }
+        }*/
+
+        public float isColliding(Vector3 pos)
+        {
+            for(int i=0; i<polycount; i++)
+            {
+                if(PointInTriangle(pos, terrain[i * 3].Position, terrain[i * 3 + 1].Position, terrain[i * 3 + 2].Position))
+                {
+                    Console.WriteLine("This one worked");
+                    return calcZ(terrain[i * 3].Position, terrain[i * 3 + 1].Position, terrain[i * 3 + 2].Position, pos);
+                }
+            }
+            //return here just to keep the thing happy
+            Console.WriteLine("BUGGER");
+            return -100000.0f;
+        }
+
+        //With thanks for this algorithm to Erik Rufelt on http://www.gamedev.net/topic/597393-getting-the-height-of-a-point-on-a-triangle/
+        private static float calcZ(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 pos)
+        {
+            float det = (p2.Z - p3.Z) * (p1.X - p3.X) + (p3.X - p2.X) * (p1.Z - p3.Z);
+
+            float l1 = ((p2.Z - p3.Z) * (pos.X - p3.X) + (p3.X - p2.X) * (pos.Z - p3.Z)) / det;
+            float l2 = ((p3.Z - p1.Z) * (pos.X - p3.X) + (p1.X - p3.X) * (pos.Z - p3.Z)) / det;
+            float l3 = 1.0f - l1 - l2;
+
+            return l1 * p1.Y + l2 * p2.Y + l3 * p3.Y;
+        }
+
+        //With thanks for this algorithm to Glenn Slayden on http://stackoverflow.com/questions/2049582/how-to-determine-a-point-in-a-triangle
+        private static bool PointInTriangle(Vector3 p, Vector3 p0, Vector3 p1, Vector3 p2)
+        {
+            float s = p0.Z * p2.X - p0.X * p2.Z + (p2.Z - p0.Z) * p.X + (p0.X - p2.X) * p.Z;
+            float t = p0.X * p1.Z - p0.Z * p1.X + (p0.Z - p1.Z) * p.X + (p1.X - p0.X) * p.Z;
+
+            if ((s < 0.0f) != (t < 0.0f))
+            {
+                return false;
+            }
+
+            float A = -p1.Z * p2.X + p0.Z * (p2.X - p1.X) + p0.X * (p1.Z - p2.Z) + p1.X * p2.Z;
+            if (A < 0.0f)
+            {
+                s = -s;
+                t = -t;
+                A = -A;
+            }
+            return s > 0.0f && t > 0.0f && (s + t) < A;
         }
     }
 }

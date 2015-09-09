@@ -69,6 +69,10 @@ namespace Project1
 
             //Setting the new view matrix if there's no collision
             //if(game.model.is_within_landscape(position))
+            float collide_height = game.terraincollide(position);
+            target.Y -= position.Y - Math.Max(position.Y, collide_height);
+            position.Y = Math.Max(position.Y, collide_height);
+            //position.Y += 0.1f;
             View = Matrix.LookAtLH(position, target, up);
             /* if (rotation == 0 && forward == 0 && sideways == 0)
              {

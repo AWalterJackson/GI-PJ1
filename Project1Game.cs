@@ -109,7 +109,7 @@ namespace Project1
             base.Draw(gameTime);
         }
 
-        public bool terraincollide(Vector3 pos){
+        public float terraincollide(Vector3 pos){
             return this.model.isColliding(pos);
         }
     }
