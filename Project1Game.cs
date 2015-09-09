@@ -102,8 +102,8 @@ namespace Project1
             lightsource.basicEffect.View = camera.View;
             water.basicEffect.View = camera.View;
             model.Draw(gameTime);
-            //lightsource.Draw(gameTime);
-            //water.Draw(gameTime);
+            lightsource.Draw(gameTime);
+            water.Draw(gameTime);
 
             // Handle base.Draw
             base.Draw(gameTime);

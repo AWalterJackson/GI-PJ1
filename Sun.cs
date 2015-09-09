@@ -16,6 +16,7 @@ namespace Project1
         Vector3 specularcolour;
         Vector3 lightdirection;
 
+
         public Sun(Project1Game game)
         {
 
@@ -85,6 +86,8 @@ namespace Project1
             };
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
+            this.game = game;
+
         }
 
         public Vector3 getLightDirection(){
@@ -94,7 +97,10 @@ namespace Project1
         public override void Update(GameTime gameTime)
         {
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
-            basicEffect.World = Matrix.Translation(-worldsize * 2, 0, 0) * Matrix.RotationX(time);
+
+            basicEffect.AmbientLightColor = new Vector3(1f, 1f, 1f);
+
+            basicEffect.World = Matrix.Translation(worldsize/2, 20, 0) * Matrix.RotationX(time);
             lightdirection.X = (float)Math.Cos(time);
             lightdirection.Y = (float)Math.Sin(time);
         }

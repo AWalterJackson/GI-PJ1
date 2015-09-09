@@ -36,6 +36,7 @@ namespace Project1
                 Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f),
                 World = Matrix.Identity
             };
+            this.game = game;
         }
 
         public override void Update(GameTime gametime)
