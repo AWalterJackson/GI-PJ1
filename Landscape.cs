@@ -22,7 +22,7 @@ namespace Project1{
             this.rngesus = new Random();
             this.coords = new float[size, size];
 
-            Generate(0,this.size,0,this.size,100,65);
+            Generate(0,this.size,0,this.size,100,129);
             this.terrain = TerrainModel(this.coords);
             vertices = Buffer.Vertex.New(game.GraphicsDevice, TerrainModel(this.coords));
 
@@ -175,9 +175,9 @@ namespace Project1{
             basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
 
             basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.9f, 0.9f, 0.9f);
             basicEffect.DirectionalLight0.Direction = light;
-            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(1f, 1f, 1f);
         }
 
         public override void Update(GameTime gametime)

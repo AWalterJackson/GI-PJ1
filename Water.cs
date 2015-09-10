@@ -55,9 +55,9 @@ namespace Project1
 
             basicEffect.Alpha = 0.75f;
             basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.9f, 0.9f, 0.9f);
             basicEffect.DirectionalLight0.Direction = light;
-            basicEffect.DirectionalLight0.SpecularColor = new Vector3(0, 0, 1);
+            basicEffect.DirectionalLight0.SpecularColor = new Vector3(1f, 1f, 1f);
         }
 
         public override void Draw(GameTime gametime)

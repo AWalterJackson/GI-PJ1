@@ -32,7 +32,7 @@ namespace Project1
         // If the screen is resized, the projection matrix will change
         public void Update(GameTime gameTime)
         {
-            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
+            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, (float)Math.Pow(2, game.scale) + 1);
             int rotation = direction(Keys.E, Keys.Q);
             float x_pos = game.mouseState.X - 0.5f;
             float y_pos = game.mouseState.Y - 0.5f;
