@@ -13,3 +13,11 @@ Terrain Implementation:
 	
 	The lighting is done by using the sun model to generate a vector representing the direction the sunlight is coming from relative to the XZ plane.
 	Other objects can then access this data using a function to read it from the sun, and this is used in their draw calls to calculate how they're lit.
+
+Refference for code used from other sources:
+
+Thanks to Erik Rufelt on http://www.gamedev.net/topic/597393-getting-the-height-of-a-point-on-a-triangle/ for use of his algorithm for calculating
+what hight a given point in a 3d triange is, given the x and z coordinates
+
+Thanks to Glenn Slayden on http://stackoverflow.com/questions/2049582/how-to-determine-a-point-in-a-triangle for use of his algorithm for calculating
+whether a given point is in a triangle

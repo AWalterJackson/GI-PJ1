@@ -37,7 +37,6 @@ namespace Project1
             float x_pos = game.mouseState.X - 0.5f;
             float y_pos = game.mouseState.Y - 0.5f;
             int time = gameTime.ElapsedGameTime.Milliseconds;
-            //View = Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * -x_pos, rotation_speed * time * -y_pos, rotation * rotation_speed * time));
             int forward = direction(Keys.W, Keys.S);
             int sideways = direction(Keys.A, Keys.D);
 
@@ -48,11 +47,11 @@ namespace Project1
             position += time * speed * forward * NormTP;
             //Moving side to side
             position += time * speed * sideways * NormTPxU;
-            //Moving the target of our view forward and back
+            //Moving the view target forward and back
             target += time * speed * forward * NormTP;
-            //Moving the target of our view side to side
+            //Moving the view target side to side
             target += time * speed * sideways * NormTPxU;
-            //Moving the target of our view as we pitch
+            //Moving the view target as we pitch
             target -= rotation_speed * time * y_pos * NormU;
             //Making sure the target stays one unit distance away from us
             target = position + Vector3.Normalize(target - position);
@@ -62,13 +61,12 @@ namespace Project1
             //Moving the 'up' vector side to side as we roll
             up -= roll_speed * time * rotation * Vector3.Normalize(Vector3.Cross(target - position, up));
             up.Normalize();
-            //Moving the target of our view as we yaw
+            //Moving the view target as we yaw
             target -= rotation_speed * time * x_pos * Vector3.Normalize(Vector3.Cross(target - position, up));
             //Making sure the target stays one unit distance away from us
             target = position + Vector3.Normalize(target - position);
 
-            //Setting the new view matrix if there's no collision
-            //if(game.model.is_within_landscape(position))
+            //Setting the new view matrix if there's no collision and it's in bounds
             Vector3 edge_bounding = game.edge_bounding(position);
             if(!edge_bounding.Equals(position))
             {
@@ -78,18 +76,7 @@ namespace Project1
             float collide_height = game.terraincollide(position);
             target.Y -= position.Y - Math.Max(position.Y, collide_height);
             position.Y = Math.Max(position.Y, collide_height);
-            //position.Y += 0.1f;
             View = Matrix.LookAtLH(position, target, up);
-            /* if (rotation == 0 && forward == 0 && sideways == 0)
-             {
-                 return;
-             }*/
-            //Console.WriteLine(View.ToString());
-            //View.Forward = speed * time * forward * View.Forward;
-            //Vector3 movement = speed * time * new Vector3(forward * View.Forward.X + sideways * View.Right.X, forward * View.Forward.Y + sideways * View.Right.Y, forward * View.Forward.Z + sideways * View.Right.Z);
-            //Vector3 movement = speed * time * forward * View.Forward;
-            //View = /*Matrix.Subtract(Matrix.Add*/Matrix.Multiply(View, Matrix.Translation(movement))/*, Matrix.Translation(new Vector3()))*/;
-            //Console.WriteLine(Matrix.Multiply(View, Matrix.RotationYawPitchRoll(rotation_speed * time * -x_pos, rotation_speed * time * -y_pos, rotation * rotation_speed * time)).ToString());
         }
 
         //Chooses what direction to go or rotate etc, based one keyboard input
