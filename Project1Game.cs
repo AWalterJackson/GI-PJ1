@@ -109,8 +109,30 @@ namespace Project1
             base.Draw(gameTime);
         }
 
-        public bool terraincollide(Vector3 pos){
+        public float terraincollide(Vector3 pos){
             return this.model.isColliding(pos);
+        }
+
+        public Vector3 edge_bounding(Vector3 pos)
+        {
+            float size = (float)Math.Pow(2, scale) + 1;
+            if (pos.X < 0)
+            {
+                pos.X = 0;
+            }
+            else if(pos.X > size)
+            {
+                pos.X = size;
+            }
+            if (pos.Z < 0)
+            {
+                pos.Z = 0;
+            }
+            else if (pos.Z > size)
+            {
+                pos.Z = size;
+            }
+            return pos;
         }
     }
 }
