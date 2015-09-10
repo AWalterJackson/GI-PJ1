@@ -53,7 +53,7 @@ namespace Project1
             basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
 
 
-            basicEffect.Alpha = 0.5f;
+            basicEffect.Alpha = 0.75f;
             basicEffect.DirectionalLight0.Enabled = true;
             basicEffect.DirectionalLight0.DiffuseColor = new Vector3(1f, 0.5f, 0);
             basicEffect.DirectionalLight0.Direction = light;
@@ -65,6 +65,7 @@ namespace Project1
             // Setup the vertices
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
+            game.GraphicsDevice.SetBlendState(game.GraphicsDevice.BlendStates.AlphaBlend);
 
             // Apply the basic effect technique and draw the sun
             basicEffect.CurrentTechnique.Passes[0].Apply();
