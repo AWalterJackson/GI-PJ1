@@ -10,6 +10,8 @@ namespace Project1
     using SharpDX.Toolkit.Graphics;
     class Water : ColoredGameObject
     {
+
+        private Project1Game gameaccess;
         public Water(Project1Game game){
 
             int max = (int)Math.Pow(2,game.scale)+1;
@@ -20,12 +22,12 @@ namespace Project1
                 game.GraphicsDevice,
                 new[]
                 {
-                    new VertexPositionNormalColor(new Vector3(0f, 0f, 0f), surfacenormal, Color.LightBlue), // Front FBLN
-                    new VertexPositionNormalColor(new Vector3(0f, 0f, max), surfacenormal, Color.LightBlue), //FTLN
-                    new VertexPositionNormalColor(new Vector3(max, 0f, max), surfacenormal, Color.LightBlue), //FTRN
-                    new VertexPositionNormalColor(new Vector3(max, 0f, max), surfacenormal, Color.LightBlue), //FBLN
-                    new VertexPositionNormalColor(new Vector3(max, 0f, 0f), surfacenormal, Color.LightBlue), //FTRN
-                    new VertexPositionNormalColor(new Vector3(0f, 0f, 0f), surfacenormal, Color.LightBlue), //FBRN)
+                    new VertexPositionNormalColor(new Vector3(0f, 0f, 0f), surfacenormal, Color.Blue), // Front FBLN
+                    new VertexPositionNormalColor(new Vector3(0f, 0f, max), surfacenormal, Color.Blue), //FTLN
+                    new VertexPositionNormalColor(new Vector3(max, 0f, max), surfacenormal, Color.Blue), //FTRN
+                    new VertexPositionNormalColor(new Vector3(max, 0f, max), surfacenormal, Color.Blue), //FBLN
+                    new VertexPositionNormalColor(new Vector3(max, 0f, 0f), surfacenormal, Color.Blue), //FTRN
+                    new VertexPositionNormalColor(new Vector3(0f, 0f, 0f), surfacenormal, Color.Blue), //FBRN)
                 });
 
             basicEffect = new BasicEffect(game.GraphicsDevice)
@@ -38,6 +40,7 @@ namespace Project1
             };
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
+            this.gameaccess = game;
             this.game = game;
         }
 
@@ -50,14 +53,14 @@ namespace Project1
         {
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
 
-            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
+            basicEffect.AmbientLightColor = gameaccess.ambient();
 
 
             basicEffect.Alpha = 0.75f;
             basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.9f, 0.9f, 0.9f);
+            basicEffect.DirectionalLight0.DiffuseColor = gameaccess.diffuse();
             basicEffect.DirectionalLight0.Direction = light;
-            basicEffect.DirectionalLight0.SpecularColor = new Vector3(1f, 1f, 1f);
+            basicEffect.DirectionalLight0.SpecularColor = gameaccess.specular();
         }
 
         public override void Draw(GameTime gametime)

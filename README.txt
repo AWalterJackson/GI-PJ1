@@ -14,7 +14,14 @@ Terrain Implementation:
 	The lighting is done by using the sun model to generate a vector representing the direction the sunlight is coming from relative to the XZ plane.
 	Other objects can then access this data using a function to read it from the sun, and this is used in their draw calls to calculate how they're lit.
 
-Refference for code used from other sources:
+Custom controls Implementation:
+	Escape key: Exits application
+	Spacebar: Toggles cursor controls in-game. (Useful for maximising/minimising the window or doing other things whilst alt+tabbed)
+	
+References for code used from other sources:
+
+Thanks to Jimmy at http://gamedev.stackexchange.com/questions/37389/diamond-square-terrain-generation-problem for the implementation of DiamondSquare
+that the code in this program is based on.
 
 Thanks to Erik Rufelt on http://www.gamedev.net/topic/597393-getting-the-height-of-a-point-on-a-triangle/ for use of his algorithm for calculating
 what hight a given point in a 3d triange is, given the x and z coordinates

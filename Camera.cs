@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -10,10 +11,11 @@ namespace Project1
 {
     class Camera
     {
+
         public Matrix View;
         public Matrix Projection;
         public Project1Game game;
-        private float speed = 0.005f;
+        private float speed = 0.05f;
         private float rotation_speed = 0.005f;
         private float roll_speed = 0.001f;
         private Vector3 position, target, up;
@@ -21,7 +23,7 @@ namespace Project1
         // Ensures that all objects are being rendered from a consistent viewpoint
         public Camera(Project1Game game)
         {
-            position = new Vector3(0, 0, -10);
+            position = new Vector3(0, game.getHeight(0,0)+5, -10);
             target = new Vector3(0, 0, 0);
             up = Vector3.UnitY;
             View = Matrix.LookAtLH(position, target, up);
@@ -32,10 +34,15 @@ namespace Project1
         // If the screen is resized, the projection matrix will change
         public void Update(GameTime gameTime)
         {
-            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, (float)Math.Pow(2, game.scale) + 1);
+            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, game.drawDistance());
             int rotation = direction(Keys.E, Keys.Q);
-            float x_pos = game.mouseState.X - 0.5f;
-            float y_pos = game.mouseState.Y - 0.5f;
+            float x_pos = 0;
+            float y_pos = 0;
+            if (!game.getCursorState())
+            {
+                x_pos = (game.mouseState.X - 0.5f) * 50;
+                y_pos = (game.mouseState.Y - 0.5f) * 50;
+            }
             int time = gameTime.ElapsedGameTime.Milliseconds;
             int forward = direction(Keys.W, Keys.S);
             int sideways = direction(Keys.A, Keys.D);

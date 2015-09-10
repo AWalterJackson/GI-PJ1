@@ -32,6 +32,8 @@ namespace Project1
 
     public class Project1Game : Game
     {
+
+        //Local variable declarations
         private GraphicsDeviceManager graphicsDeviceManager;
         private Landscape model;
         private Water water;
@@ -42,6 +44,7 @@ namespace Project1
         public MouseState mouseState;
         private Sun lightsource;
         public int scale;
+        private bool enableCursor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Project1Game" /> class.
@@ -55,18 +58,19 @@ namespace Project1
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
 
-            scale = 7;
+            scale = 8;
+            enableCursor = false;
             keyboardManager = new KeyboardManager(this);
             mouseManager = new MouseManager(this);
         }
 
         protected override void LoadContent()
         {
+            //Load game content
             model = new Landscape(this, this.scale);
             water = new Water(this);
             lightsource = new Sun(this);
-
-            // Create an input layout from the vertices
+            this.camera = new Camera(this);
 
             base.LoadContent();
         }
@@ -74,7 +78,7 @@ namespace Project1
         protected override void Initialize()
         {
             Window.Title = "Project 1";
-            this.camera = new Camera(this);
+            
             base.Initialize();
         }
 
@@ -85,22 +89,52 @@ namespace Project1
 
             // Handle base.Update
             base.Update(gameTime);
+
+            //Update game objects
             lightsource.Update(gameTime);
             model.Update(gameTime, lightsource.getLightDirection());
             water.Update(gameTime, lightsource.getLightDirection());
             camera.Update(gameTime);
+
+            //Enable/disable cursor control of the camera
+            if (keyboardState.IsKeyPressed(Keys.Space)){
+                if(enableCursor == true){
+                    enableCursor = false;
+                }
+                else{
+                    enableCursor = true;
+                }
+            }
+
+            //Reset cursor position if cursor control enabled
+            if(enableCursor == false)
+            {
+                mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
+            }
+            
+            //Exit the game
+            if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                this.Exit();
+                this.Dispose();
+            }
+            
         }
 
         protected override void Draw(GameTime gameTime)
         {
             // Clears the screen with the Color.CornflowerBlue
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //Set the projections and views for each object
             model.basicEffect.Projection = camera.Projection;
             lightsource.basicEffect.Projection = camera.Projection;
             water.basicEffect.Projection = camera.Projection;
             model.basicEffect.View = camera.View;
             lightsource.basicEffect.View = camera.View;
             water.basicEffect.View = camera.View;
+
+            //Draw each object
             model.Draw(gameTime);
             lightsource.Draw(gameTime);
             water.Draw(gameTime);
@@ -109,10 +143,13 @@ namespace Project1
             base.Draw(gameTime);
         }
 
+        //Function to deliver collision information to other classes from the landscape
         public float terraincollide(Vector3 pos){
             return this.model.isColliding(pos);
         }
 
+
+        //Function to check if the camera is hitting the edge of the world
         public Vector3 edge_bounding(Vector3 pos)
         {
             float size = (float)Math.Pow(2, scale) + 1;
@@ -133,6 +170,47 @@ namespace Project1
                 pos.Z = size;
             }
             return pos;
+        }
+
+        //Functions to send various light values
+        public Vector3 ambient()
+        {
+            return this.lightsource.getAmbient();
+        }
+
+        public Vector3 specular()
+        {
+            return this.lightsource.getSpecular();
+        }
+
+        public Vector3 diffuse()
+        {
+            return this.lightsource.getDiffuse();
+        }
+
+        //Function to transmit if cursor control is enabled or not
+        public bool getCursorState(){
+            return enableCursor;
+        }
+
+        //Function to transmit the height at a given point
+        public float getHeight(int a, int b){
+            return model.heightAtPoint(a, b);
+        }
+
+        //Function controlling the draw distance
+        public float drawDistance()
+        {
+            int dist = (int)Math.Pow(2, this.scale) + 1;
+
+            if (dist > 512)
+            {
+                return 512;
+            }
+            else
+            {
+                return dist;
+            }
         }
     }
 }

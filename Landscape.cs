@@ -9,21 +9,29 @@ namespace Project1{
     using SharpDX.Toolkit.Graphics;
     class Landscape : ColoredGameObject{
 
-        public int size;
-        private int polycount;
-        private int degree;
-        private float[,] coords;
-        private VertexPositionNormalColor[] terrain;
-        private Random rngesus;
-        public Landscape(Game game, int degree){
+        //Declaration of internal variables
+        public int size;                                //Map side length
+        private int polycount;                          //Number of polygons in the map model
+        private int degree;                             //Degree of map size (2^degree)
+        private int maxheight;                          //Max height for objects in the terrain
+        private float[,] coords;                        //Coordinate map used for DiamondSquare
+        private VertexPositionNormalColor[] terrain;    //Terrain vertices
+        private Random rngesus;                         //Random number generator
+        private Project1Game gameaccess;                //Access to public game functions
+
+        public Landscape(Project1Game game, int degree){
             this.degree = degree;
             this.size = (int)Math.Pow(2,this.degree)+1;
+            this.maxheight = this.size/2;
             this.polycount = (int)Math.Pow(this.size - 1, 2) * 2;
             this.rngesus = new Random();
             this.coords = new float[size, size];
 
-            Generate(0,this.size,0,this.size,100,129);
+            //Generate the heightmap using DiamondSquare
+            Generate(0,this.size,0,size,maxheight,size/2);
+            //Generate the terrain model
             this.terrain = TerrainModel(this.coords);
+            //Place terrain model into vertex buffer
             vertices = Buffer.Vertex.New(game.GraphicsDevice, TerrainModel(this.coords));
 
             basicEffect = new BasicEffect(game.GraphicsDevice)
@@ -36,6 +44,7 @@ namespace Project1{
             };
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
+            this.gameaccess = game;
             this.game = game;
             
         }
@@ -149,11 +158,15 @@ namespace Project1{
         }
 
         private Color getColor(float vert){
-            if (vert >= 0 && vert < 10){
+            if (vert >1 && vert <= 0.15*maxheight){
                 return Color.Green;
             }
-            if (vert >= 10){
+            if (vert > 0.15*maxheight && vert <= 0.4*maxheight){
                 return Color.Gray;
+            }
+            if (vert > 0.4*maxheight)
+            {
+                return Color.White;
             }
             else{
                 return Color.SandyBrown;
@@ -171,13 +184,12 @@ namespace Project1{
         {
             // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
-
-            basicEffect.AmbientLightColor = new Vector3(0.1f, 0.1f, 0.1f);
+            basicEffect.AmbientLightColor = gameaccess.ambient();
 
             basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.9f, 0.9f, 0.9f);
+            basicEffect.DirectionalLight0.DiffuseColor = gameaccess.diffuse();
             basicEffect.DirectionalLight0.Direction = light;
-            basicEffect.DirectionalLight0.SpecularColor = new Vector3(1f, 1f, 1f);
+            basicEffect.DirectionalLight0.SpecularColor = gameaccess.specular();
         }
 
         public override void Update(GameTime gametime)
@@ -195,29 +207,6 @@ namespace Project1{
             basicEffect.CurrentTechnique.Passes[0].Apply();
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
-
-        /*public bool isColliding(Vector3 pos)
-        {
-            int i = 0;
-
-            int closestx = (int)Math.Round(pos.X, MidpointRounding.AwayFromZero);
-            int closestz = (int)Math.Round(pos.Z, MidpointRounding.AwayFromZero);
-
-            while (terrain[i].Position.X != closestx && terrain[i].Position.Z != closestz){
-                if (i > (polycount*3)/2 + 1){
-                    return false;
-                }
-                i++;
-            }
-
-            if (terrain[i].Position.Y >= pos.Y){
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }*/
 
         public float isColliding(Vector3 pos)
         {
@@ -263,6 +252,11 @@ namespace Project1{
                 A = -A;
             }
             return s > 0.0f && t > 0.0f && (s + t) < A;
+        }
+
+        public float heightAtPoint(int a, int b)
+        {
+            return coords[a, b];
         }
     }
 }
