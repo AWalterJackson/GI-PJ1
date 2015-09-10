@@ -15,6 +15,7 @@ namespace Project1
         public Project1Game game;
         private float speed = 0.005f;
         private float rotation_speed = 0.005f;
+        private float roll_speed = 0.001f;
         private Vector3 position, target, up;
 
         // Ensures that all objects are being rendered from a consistent viewpoint
@@ -59,7 +60,7 @@ namespace Project1
             up += rotation_speed * time * y_pos * Vector3.Normalize(target - position);
             up.Normalize();
             //Moving the 'up' vector side to side as we roll
-            up -= rotation_speed * time * rotation * Vector3.Normalize(Vector3.Cross(target - position, up));
+            up -= roll_speed * time * rotation * Vector3.Normalize(Vector3.Cross(target - position, up));
             up.Normalize();
             //Moving the target of our view as we yaw
             target -= rotation_speed * time * x_pos * Vector3.Normalize(Vector3.Cross(target - position, up));
