@@ -225,12 +225,10 @@ namespace Project1{
             {
                 if(PointInTriangle(pos, terrain[i * 3].Position, terrain[i * 3 + 1].Position, terrain[i * 3 + 2].Position))
                 {
-                    Console.WriteLine("This one worked");
                     return calcZ(terrain[i * 3].Position, terrain[i * 3 + 1].Position, terrain[i * 3 + 2].Position, pos);
                 }
             }
             //return here just to keep the thing happy
-            Console.WriteLine("BUGGER");
             return -100000.0f;
         }
 
