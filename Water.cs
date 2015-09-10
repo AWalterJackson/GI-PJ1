@@ -10,7 +10,7 @@ namespace Project1
     using SharpDX.Toolkit.Graphics;
     class Water : ColoredGameObject
     {
-
+        //Local Variable declarations
         private Project1Game gameaccess;
         public Water(Project1Game game){
 
@@ -44,11 +44,13 @@ namespace Project1
             this.game = game;
         }
 
+        //We use a custom update method
         public override void Update(GameTime gametime)
         {
             throw new NotImplementedException();
         }
 
+        //Update including light
         public void Update(GameTime gameTime, Vector3 light)
         {
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
@@ -63,6 +65,7 @@ namespace Project1
             basicEffect.DirectionalLight0.SpecularColor = gameaccess.specular();
         }
 
+        //DRAW!
         public override void Draw(GameTime gametime)
         {
             // Setup the vertices
@@ -70,7 +73,7 @@ namespace Project1
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
             game.GraphicsDevice.SetBlendState(game.GraphicsDevice.BlendStates.AlphaBlend);
 
-            // Apply the basic effect technique and draw the sun
+            // Apply the basic effect technique and draw the water
             basicEffect.CurrentTechnique.Passes[0].Apply();
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }

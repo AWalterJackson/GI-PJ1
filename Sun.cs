@@ -10,12 +10,13 @@ namespace Project1
     using SharpDX.Toolkit.Graphics;
     class Sun : ColoredGameObject
     {
-        int worldsize;
-        Vector3 ambientcolour;
-        Vector3 directionalcolour;
-        Vector3 specularcolour;
-        Vector3 lightdirection;
-        Vector3 diffusecolour;
+        //local variable declarations
+        private int worldsize;
+        private Vector3 ambientcolour;
+        private Vector3 directionalcolour;
+        private Vector3 specularcolour;
+        private Vector3 lightdirection;
+        private Vector3 diffusecolour;
 
         public Sun(Project1Game game)
         {
@@ -40,42 +41,42 @@ namespace Project1
                 game.GraphicsDevice,
                 new[]
                 {
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), frontNormal, Color.Yellow), // Front FBLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), frontNormal, Color.Yellow), //FTLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), frontNormal, Color.Yellow), //FTRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), frontNormal, Color.Yellow), //FBLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), frontNormal, Color.Yellow), //FTRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), frontNormal, Color.Yellow), //FBRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), backNormal, Color.Yellow), // BACK BBLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), backNormal, Color.Yellow), //BTRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), backNormal, Color.Yellow), //BTLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), backNormal, Color.Yellow), //BBLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), backNormal, Color.Yellow), //BTRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), backNormal, Color.Yellow), //BTRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), topNormal, Color.Yellow), // Top FTLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), topNormal, Color.Yellow), //BTLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), topNormal, Color.Yellow), //BTRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), topNormal, Color.Yellow), //FTLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), topNormal, Color.Yellow), //BTRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), topNormal, Color.Yellow), //FTRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), bottomNormal, Color.Yellow), // Bottom FBLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), bottomNormal, Color.Yellow), //BBRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), bottomNormal, Color.Yellow), //BBLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f),bottomNormal, Color.Yellow), //FBLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), bottomNormal, Color.Yellow), //FBRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), bottomNormal, Color.Yellow), //BBRN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), leftNormal, Color.Yellow), // Left FBLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), leftNormal, Color.Yellow), //BBLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), leftNormal, Color.Yellow), //BTLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), leftNormal, Color.Yellow), //FBLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), leftNormal, Color.Yellow), //BTLN
-                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), leftNormal, Color.Yellow), //FTLN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), rightNormal, Color.Yellow), // Right FBRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), rightNormal, Color.Yellow), //BTRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), rightNormal, Color.Yellow), //BBRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), rightNormal, Color.Yellow), //FBRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), rightNormal, Color.Yellow), //FTRN
-                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), rightNormal, Color.Yellow), //BTRN
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), frontNormal, Color.Yellow), // Front
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), frontNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), frontNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), frontNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), frontNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), frontNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), backNormal, Color.Yellow), // BACK
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), backNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), backNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), backNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), backNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), backNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), topNormal, Color.Yellow), // Top
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), topNormal, Color.Yellow),
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), topNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), topNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), topNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), topNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), bottomNormal, Color.Yellow), // Bottom
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), bottomNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), bottomNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f),bottomNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), bottomNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), bottomNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), leftNormal, Color.Yellow), // Left
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, 4.0f), leftNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), leftNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, -4.0f, -4.0f), leftNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, 4.0f), leftNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(-4.0f, 4.0f, -4.0f), leftNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), rightNormal, Color.Yellow), // Right
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), rightNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, 4.0f), rightNormal, Color.Yellow),
+                    new VertexPositionNormalColor(new Vector3(4.0f, -4.0f, -4.0f), rightNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, -4.0f), rightNormal, Color.Yellow), 
+                    new VertexPositionNormalColor(new Vector3(4.0f, 4.0f, 4.0f), rightNormal, Color.Yellow), 
                 });
 
             basicEffect = new BasicEffect(game.GraphicsDevice)
@@ -92,6 +93,7 @@ namespace Project1
 
         }
 
+        //Publically accessible light values
         public Vector3 getLightDirection(){
             return this.lightdirection;
         }
@@ -111,6 +113,7 @@ namespace Project1
             return this.diffusecolour;
         }
 
+        //Update the sun's position and it's lighting angles
         public override void Update(GameTime gameTime)
         {
             float time = (float)gameTime.TotalGameTime.TotalSeconds;

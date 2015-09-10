@@ -110,10 +110,12 @@ namespace Project1{
             Generate(xmin,xmax,ymin,ymax,maxnoise/2,remaining/2);
         }
 
+        //Average 4 values
         private float fouravg(float a, float b, float c, float d){
             return (a + b + c + d) / (float)4.0;
         }
 
+        //Generate a 3D model for the terrain
         private VertexPositionNormalColor[] TerrainModel(float[,] map){
             VertexPositionNormalColor[] VList = new VertexPositionNormalColor[this.polycount*3];
             int index=0;
@@ -157,6 +159,7 @@ namespace Project1{
             return VList;
         }
 
+        //Set vertex colour based on height
         private Color getColor(float vert){
             if (vert >1 && vert <= 0.15*maxheight){
                 return Color.Green;
@@ -173,6 +176,7 @@ namespace Project1{
             }
         }
 
+        //Generate normals for surfaces
         private Vector3 genNormal(Vector3 a, Vector3 b, Vector3 c)
         {
             Vector3 normal = Vector3.Cross(b - a, c - a);
@@ -180,9 +184,9 @@ namespace Project1{
             return normal;
         }
 
+        //Update the lighting on the landscape
         public void Update(GameTime gameTime, Vector3 light)
         {
-            // Rotate the cube.
             var time = (float)gameTime.TotalGameTime.TotalSeconds;
             basicEffect.AmbientLightColor = gameaccess.ambient();
 
@@ -192,6 +196,7 @@ namespace Project1{
             basicEffect.DirectionalLight0.SpecularColor = gameaccess.specular();
         }
 
+        //We're using a slightly modified update, see above
         public override void Update(GameTime gametime)
         {
             throw new NotImplementedException();
@@ -208,6 +213,7 @@ namespace Project1{
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
 
+        //Test for collisions
         public float isColliding(Vector3 pos)
         {
             for(int i=0; i<polycount; i++)

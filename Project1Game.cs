@@ -105,12 +105,6 @@ namespace Project1
                     enableCursor = true;
                 }
             }
-
-            //Reset cursor position if cursor control enabled
-            if(enableCursor == false)
-            {
-                mouseManager.SetPosition(new Vector2(0.5f, 0.5f));
-            }
             
             //Exit the game
             if (keyboardState.IsKeyDown(Keys.Escape))

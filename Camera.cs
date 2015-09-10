@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Input;
@@ -11,7 +10,7 @@ namespace Project1
 {
     class Camera
     {
-
+        //Local variable declarations
         public Matrix View;
         public Matrix Projection;
         public Project1Game game;
@@ -40,8 +39,8 @@ namespace Project1
             float y_pos = 0;
             if (!game.getCursorState())
             {
-                x_pos = (game.mouseState.X - 0.5f) * 50;
-                y_pos = (game.mouseState.Y - 0.5f) * 50;
+                x_pos = (game.mouseState.X - 0.5f);
+                y_pos = (game.mouseState.Y - 0.5f);
             }
             int time = gameTime.ElapsedGameTime.Milliseconds;
             int forward = direction(Keys.W, Keys.S);
